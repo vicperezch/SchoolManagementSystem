@@ -30,10 +30,10 @@ public class AcademicManager implements IAcademicServices {
     public void registerStudent(Student student) {
         if (!students.contains(student)) {
             students.add(student);
-            System.out.println("El estudiante ha sido matriculado.");
+            System.out.println("El estudiante " + student.getName() + " ha sido matriculado.");
 
         } else {
-            System.out.println("El estudiante ya está matriculado.");
+            System.out.println("El estudiante " + student.getName() + " ya está matriculado.");
         }
     }
 
@@ -47,10 +47,10 @@ public class AcademicManager implements IAcademicServices {
             courses.add(course);
             enrolledStudents.put(course.getId(), new ArrayList<>());
 
-            System.out.println("Se ha creado el curso.");
+            System.out.println("Se ha creado el curso " + course.getName() + ".");
 
         } else {
-            System.out.println("El curso ya existe.");
+            System.out.println("El curso " + course.getName() + " ya existe.");
         }
     }
 
@@ -65,12 +65,18 @@ public class AcademicManager implements IAcademicServices {
 
         if (studentList.contains(student.getId())) {
             throw new EstudianteYaInscritoException("El estudiante ya está inscrito en el curso.");
+        }
 
+        String courseName = "";
+        for (Course c: courses) {
+            if (c.getId() == courseId) {
+                courseName = c.getName();
+            }
         }
 
         studentList.add(student.getId());
         enrolledStudents.replace(courseId, studentList);
-        System.out.println("Se ha inscrito al estudiante.");
+        System.out.println("Se ha inscrito al estudiante " + student.getName() + " en " + courseName + ".");
     }
 
     /**
@@ -88,6 +94,14 @@ public class AcademicManager implements IAcademicServices {
 
         studentList.remove((Integer) studentId);
         enrolledStudents.replace(courseId, studentList);
-        System.out.println("Se ha retirado al estudiante del curso.");
+        String name = "";
+
+        for (Student st: students) {
+            if (st.getId() == studentId) {
+                name = st.getName();
+            }
+        }
+
+        System.out.println("Se ha retirado al estudiante " + name + " del curso.");
     }
 }
